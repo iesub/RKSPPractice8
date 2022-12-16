@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: game-engine-controller
+  name: game-engine-controller
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: game-engine-controller
+  template:
+    metadata:
+      labels:
+        app: game-engine-controller
+    spec:
+      serviceAccountName: game-service-controller-account
+      automountServiceAccountToken: true
+      containers:
+      - image: vkr-game-engine-controller-service
+        imagePullPolicy: IfNotPresent
+        envFrom:
+            - configMapRef:
+                name: game-engine-controller-config
+        name: game-engine-controller

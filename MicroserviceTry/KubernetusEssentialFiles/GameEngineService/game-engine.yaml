@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: game-engine
+  name: game-engine
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: game-engine
+  template:
+    metadata:
+      labels:
+        app: game-engine
+    spec:
+      containers:
+      - image: vkr-game-engine-service
+        imagePullPolicy: IfNotPresent
+        envFrom:
+            - configMapRef:
+                name: game-engine-config
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        ports:
+        - name: http-traffic
+          containerPort: 20500
+        name: game-engine

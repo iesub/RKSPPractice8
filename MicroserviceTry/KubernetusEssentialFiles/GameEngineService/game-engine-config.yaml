@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: game-engine-config
+  labels:
+    app: game-engine
+data:
+  EUREKA-SERVICE_URL_DEFAULT_ZONE: http://eureka-service:20100/eureka
+  DATA_BASE_PATH: jdbc:postgresql://game-service-db-service:20207/postgres
+  NODE_IP: 192.168.1.192
+  MAX_SCENES_ALLOWED: '3'

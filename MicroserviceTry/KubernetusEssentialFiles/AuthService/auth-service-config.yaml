@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-service-config
+  labels:
+    app: auth-service
+data:
+  EUREKA-SERVICE_URL_DEFAULT_ZONE: http://eureka-service:20100/eureka
+  DATA_BASE_PATH: jdbc:postgresql://user-service-db-service:20205/postgres
+  REDIS_HOST: redis-cache-service
+  REDIS_PORT: '20206'

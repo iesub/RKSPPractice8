@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eureka-service
+  name: eureka-service
+  namespace: default
+spec:
+  ports: 
+  - port: 20100
+    protocol: TCP
+    targetPort: 20100
+    nodePort: 30100
+  selector:
+    app: eureka-service
+  type: NodePort

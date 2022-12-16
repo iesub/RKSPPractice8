@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cache-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  redis-cache
+  template:
+    metadata:
+      labels:
+        app:  redis-cache
+    spec:
+      containers:
+        - name: postgres
+          image: redis
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6379
+          command: ['redis-server', '--save', '20', '1', '--loglevel', 'warning', '--requirepass', 'AuthServiceRedisPass']
+          volumeMounts:
+            - mountPath: /data
+              name: redis
+      volumes:
+        - name: redis
+          persistentVolumeClaim:
+            claimName: redis-cache-pv-claim

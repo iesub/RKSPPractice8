@@ -1,0 +1,1 @@
+kubectl port-forward --namespace default svc/prometheus-kube-prometheus-prometheus 9090:9090

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-service-db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  game-service-db
+  template:
+    metadata:
+      labels:
+        app:  game-service-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:10.5
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: game-service-db-config
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgredb
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: game-service-db-pv-claim

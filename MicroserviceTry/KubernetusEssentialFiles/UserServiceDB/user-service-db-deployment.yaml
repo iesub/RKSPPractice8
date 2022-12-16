@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service-db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  user-service-db
+  template:
+    metadata:
+      labels:
+        app:  user-service-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:10.5
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: user-service-db-config
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgredb
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: user-service-db-pv-claim

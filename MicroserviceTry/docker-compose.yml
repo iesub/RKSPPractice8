@@ -1,0 +1,62 @@
+version: '3.7'
+services:
+  
+  UserServiceDB:
+    image: postgres:10.5
+    restart: always
+    command: ["postgres", "-c", "log_statement=all"]
+    environment:
+      - POSTGRES_USER=userservice
+      - POSTGRES_PASSWORD=userservicepass
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - '20205:5432'
+    volumes: 
+      - ./Data/UserServiceDB:/var/lib/postgresql/data
+  
+  AuthServiceRedisCache:
+    image: redis
+    restart: always
+    ports:
+      - '20206:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass AuthServiceRedisPass
+    volumes: 
+      - ./Data/AuthServiceRedisCache:/data
+  
+  WitcherRPGDB:
+    image: postgres:10.5
+    restart: always
+    command: ["postgres", "-c", "log_statement=all"]
+    environment:
+      - POSTGRES_USER=Server
+      - POSTGRES_PASSWORD=ServerPassWitcher
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - '20207:5432'
+    volumes: 
+      - ./Data/WitcherRPGDB:/var/lib/postgresql/data
+
+  Grafanf:
+    image: grafana/grafana
+    ports:
+      - 20208:3000
+    volumes:
+      - ./Data/Grafana:/var/lib/grafana
+      - ./Data/GrafanaLogs:/var/log/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=ServerAdmin
+      - GF_SECURITY_ADMIN_PASSWORD=ServerAdminPass
+  
+  Prometheus:
+    image: prom/prometheus
+    ports:
+      - 20209:9090
+    volumes:
+      - ./Data/ConfigFiles/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./Data/Prometheus:/prometheus

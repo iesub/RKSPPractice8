@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cache-service
+  labels:
+    app: redis-cache
+spec:
+  type: NodePort
+  ports:
+    - port: 20206
+      targetPort: 6379
+      nodePort: 30206
+  type: NodePort
+  selector:
+    app: redis-cache

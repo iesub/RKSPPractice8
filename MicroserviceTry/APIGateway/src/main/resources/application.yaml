@@ -1,0 +1,28 @@
+server:
+  port: '20300'
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    config:
+      enabled: false
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders:
+              - content-type
+              - authorization
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA-SERVICE_URL_DEFAULT_ZONE:http://localhost:20100/eureka}

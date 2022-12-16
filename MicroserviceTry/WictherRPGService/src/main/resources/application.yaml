@@ -1,0 +1,65 @@
+spring:
+  datasource:
+    url: '${DATA_BASE_PATH:jdbc:postgresql://localhost:30207/postgres}'
+    username: Server
+    password: ServerPassWitcher
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQL81Dialect
+    hibernate:
+      ddl-auto: update
+  session:
+    jdbc:
+      initialize-schema: always
+    store-type: jdbc
+  main:
+    allow-circular-references: true
+  security:
+    user:
+      name: test
+      password: test
+  websocket:
+    connection:
+      name: '${WSCONNECTURL:http://localhost:}'
+  application:
+    name: game-engine-service
+allowed:
+  origin: '${CORS_ALLOWED_ORIGIN:http://localhost:3000}'
+client:
+  simple:
+    broker: /client
+user:
+  destination:
+    prefix: /user
+server:
+  port: '20500'
+  nodeIp: ${NODE_IP:localhost}
+  podName: ${POD_NAME:localhost}
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA-SERVICE_URL_DEFAULT_ZONE:http://localhost:30100/eureka}
+    registerWithEureka: true
+    fetchRegistry: true
+  instance:
+    leaseRenewalIntervalInSeconds: '10'
+    instanceId: >-
+      ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+max:
+  scenes:
+    allowed: ${MAX_SCENES_ALLOWED:10}

@@ -1,0 +1,16 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: game-service-db-pv-volume
+  labels:
+    type: local
+    app: game-service-db
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /Data/GameServiceDB
+    type: DirectoryOrCreate

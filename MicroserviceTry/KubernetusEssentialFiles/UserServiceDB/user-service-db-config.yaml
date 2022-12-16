@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-service-db-config
+  labels:
+    app: user-service-db
+data:
+  POSTGRES_USER: userservice
+  POSTGRES_PASSWORD: userservicepass
